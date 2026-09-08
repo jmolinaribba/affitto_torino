@@ -1,0 +1,11 @@
+{
+  "citta": "Milano",
+  "prezzo_massimo": 900,
+  "mq_minimi": 40,
+  "locali_minimi": 2,
+  "siti_attivi": {
+    "immobiliare": true,
+    "idealista": true,
+    "subito": true
+  }
+}

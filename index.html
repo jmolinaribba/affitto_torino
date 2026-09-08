@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notifiche Affitto</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#2b6cb0">
+  <style>
+    body { font-family: system-ui, -apple-system, sans-serif; background: #f7fafc; padding: 20px; color: #2d3748; }
+    .card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); max-width: 420px; margin: 0 auto; }
+    h1 { font-size: 1.5rem; color: #2b6cb0; margin-bottom: 1rem; }
+    .detail { margin-bottom: 12px; font-size: 0.95rem; }
+    .label { font-weight: bold; color: #4a5568; }
+    button { background: #3182ce; color: white; border: none; padding: 12px; border-radius: 6px; width: 100%; font-size: 1rem; cursor: pointer; margin-top: 15px; }
+    button:hover { background: #2b6cb0; }
+    button.secondary { background: #a0aec0; }
+    button.secondary:hover { background: #718096; }
+
+    .tabs { display: flex; margin-bottom: 16px; border-bottom: 1px solid #e2e8f0; }
+    .tab { flex: 1; text-align: center; padding: 10px; cursor: pointer; font-weight: 600; color: #718096; border-bottom: 2px solid transparent; }
+    .tab.active { color: #2b6cb0; border-bottom-color: #2b6cb0; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    label { display: block; font-size: 0.85rem; font-weight: bold; color: #4a5568; margin-top: 12px; margin-bottom: 4px; }
+    input[type="text"], input[type="number"] {
+      width: 100%; padding: 10px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 0.95rem; box-sizing: border-box;
+    }
+    .checkbox-row { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+    .checkbox-row input { width: auto; }
+    .hint { font-size: 0.75rem; color: #a0aec0; margin-top: 4px; }
+    .status-msg { font-size: 0.85rem; margin-top: 10px; text-align: center; }
+    fieldset { border: 1px solid #e2e8f0; border-radius: 8px; margin-top: 18px; padding: 10px 12px; }
+    legend { font-size: 0.8rem; color: #718096; padding: 0 4px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Affitto</h1>
+
+    <div class="tabs">
+      <div class="tab active" data-tab="detalles">Dettagli</div>
+      <div class="tab" data-tab="criterios">Criteri</div>
+    </div>
+
+    <!-- Pestaña: detalles del alquiler actual (funcionalidad original) -->
+    <div id="tab-detalles" class="tab-content active">
+      <div id="content">Caricamento dati...</div>
+      <button id="test-btn">Invia Notifica di Test (ntfy)</button>
+    </div>
+
+    <!-- Pestaña: criterios de búsqueda editables -->
+    <div id="tab-criterios" class="tab-content">
+      <form id="criteria-form">
+        <label for="citta">Città</label>
+        <input type="text" id="citta" placeholder="Milano">
+
+        <label for="prezzo_massimo">Prezzo massimo (€)</label>
+        <input type="number" id="prezzo_massimo" min="0">
+
+        <label for="mq_minimi">Metri quadri minimi</label>
+        <input type="number" id="mq_minimi" min="0">
+
+        <label for="locali_minimi">Locali minimi</label>
+        <input type="number" id="locali_minimi" min="0">
+
+        <div class="checkbox-row">
+          <input type="checkbox" id="site-immobiliare">
+          <label for="site-immobiliare" style="margin:0;">Immobiliare.it</label>
+        </div>
+        <div class="checkbox-row">
+          <input type="checkbox" id="site-idealista">
+          <label for="site-idealista" style="margin:0;">Idealista.it</label>
+        </div>
+        <div class="checkbox-row">
+          <input type="checkbox" id="site-subito">
+          <label for="site-subito" style="margin:0;">Subito.it</label>
+        </div>
+
+        <button type="submit">Salva criteri</button>
+      </form>
+
+      <div id="criteria-status" class="status-msg"></div>
+
+      <fieldset>
+        <legend>Configurazione GitHub (una sola volta)</legend>
+        <label for="gh-owner">Utente/Organizzazione</label>
+        <input type="text" id="gh-owner" placeholder="tuo-utente">
+        <label for="gh-repo">Nome repository</label>
+        <input type="text" id="gh-repo" placeholder="affitto-scraper">
+        <label for="gh-token">Token di accesso personale</label>
+        <input type="text" id="gh-token" placeholder="ghp_xxx...">
+        <div class="hint">Il token si salva solo in questo dispositivo (non viene inviato a nessun server tranne GitHub). Serve un Personal Access Token con permesso "Contents: Read and write" limitato a questo repository.</div>
+        <button type="button" class="secondary" id="save-config-btn">Salva configurazione</button>
+      </fieldset>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script src="criteria.js"></script>
+</body>
+</html>
