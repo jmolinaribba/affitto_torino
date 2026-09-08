@@ -2,8 +2,6 @@ name: Scraper affitti
 
 on:
   schedule:
-    # Cada 30 minutos. Ajustar según necesidad (cuidado con no exagerar
-    # la frecuencia: los sitios pueden bloquear IPs muy activas).
     - cron: "0 8  * *"
   workflow_dispatch: {}  # permite correrlo manualmente desde la pestaña Actions
 
