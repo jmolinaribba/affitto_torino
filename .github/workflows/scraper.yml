@@ -1,0 +1,40 @@
+name: Scraper affitti
+
+on:
+  schedule:
+    # Cada 30 minutos. Ajustar según necesidad (cuidado con no exagerar
+    # la frecuencia: los sitios pueden bloquear IPs muy activas).
+    - cron: "0 8  * *"
+  workflow_dispatch: {}  # permite correrlo manualmente desde la pestaña Actions
+
+permissions:
+  contents: write  # necesario para poder commitear seen.json actualizado
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instalar dependencias
+        run: pip install -r requirements.txt
+
+      - name: Ejecutar scraper
+        env:
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+        run: python main.py
+        working-directory: scraper
+
+      - name: Commitear seen.json actualizado
+        run: |
+          git config user.name "affitto-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add seen.json
+          git diff --quiet --cached || git commit -m "Aggiorna annunci visti [skip ci]"
+          git push
